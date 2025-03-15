@@ -26,24 +26,35 @@ export interface CricketGround {
 export const fetchCricketGrounds = async (country?: string): Promise<CricketGround[]> => {
   console.log(`Fetching cricket grounds${country ? ` for ${country}` : ''} from Supabase...`);
   
-  let query = supabase
-    .from('cricket_grounds')
-    .select('*')
-    .order('ground', { ascending: true });
+  try {
+    let query = supabase
+      .from('cricket_grounds')
+      .select('*')
+      .order('ground', { ascending: true });
+      
+    if (country) {
+      query = query.eq('country', country);
+    }
     
-  if (country) {
-    query = query.eq('country', country);
+    const { data, error } = await query;
+    
+    if (error) {
+      console.error('Error fetching cricket grounds:', error);
+      throw error;
+    }
+    
+    if (!data || data.length === 0) {
+      console.log('No cricket grounds found in the database');
+      return [];
+    }
+    
+    console.log(`Successfully fetched ${data.length} cricket grounds`);
+    return data;
+  } catch (error) {
+    console.error('Error in fetchCricketGrounds:', error);
+    // Return empty array instead of throwing error to prevent UI from breaking
+    return [];
   }
-  
-  const { data, error } = await query;
-  
-  if (error) {
-    console.error('Error fetching cricket grounds:', error);
-    throw error;
-  }
-  
-  console.log(`Successfully fetched ${data?.length || 0} cricket grounds`);
-  return data || [];
 };
 
 export const fetchCricketGroundByName = async (groundName: string): Promise<CricketGround | null> => {

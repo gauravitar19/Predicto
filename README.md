@@ -7,6 +7,7 @@ A sophisticated cricket match prediction tool powered by AI and real-time data. 
 - **Real-time Cricket Updates**: Stay informed with live scores, upcoming matches, and match results
 - **Advanced Prediction Model**: Uses multiple factors including team stats, pitch conditions, and weather
 - **Real-time Data Integration**: Enhances prediction accuracy with live match data from Cricket Data API
+- **Open Source API Option**: Works with or without an API key, using open source cricket data as fallback
 - **AI-Powered Analysis**: Optional AI sentiment analysis for improved predictions
 - **Interactive UI**: Modern, user-friendly interface with real-time updates
 - **Detailed Results**: Comprehensive breakdown of factors influencing the prediction
@@ -31,6 +32,18 @@ npm run dev
 2. Create a `.env` file in the project root
 3. Add your API key as shown in the example above
 
+### Using Without an API Key
+
+If you don't want to sign up for an API key, you can use the application with the built-in open source cricket API:
+
+1. Create a `.env` file in the project root
+2. Either leave the API key empty or remove the line completely:
+```
+VITE_CRICKET_API_KEY=
+```
+
+The application will automatically detect the missing API key and switch to the open source API mode.
+
 ## Technologies Used
 
 - React
@@ -51,4 +64,4 @@ npm run dev
 
 ## Credits
 
-This project uses the Cricket Data API for real-time cricket information.
+This project uses the Cricket Data API for real-time cricket information and falls back to open source cricket APIs when no API key is provided.

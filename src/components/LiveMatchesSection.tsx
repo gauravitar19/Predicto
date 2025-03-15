@@ -6,7 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LiveMatch, getCurrentMatches } from '@/utils/cricketDataApi';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Clock, RefreshCcw } from 'lucide-react';
+import { Clock, RefreshCcw, Info } from 'lucide-react';
+
+// Check if API key is available
+const hasApiKey = !!import.meta.env.VITE_CRICKET_API_KEY;
 
 interface LiveMatchesSectionProps {
   onMatchSelect?: (matchId: string) => void;
@@ -150,15 +153,23 @@ const LiveMatchesSection: React.FC<LiveMatchesSectionProps> = ({ onMatchSelect }
     <div className="live-matches-container">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold">Cricket Updates</h2>
-        <Button 
-          onClick={() => refetch()} 
-          variant="outline" 
-          size="sm"
-          disabled={isRefetching}
-        >
-          <RefreshCcw className={`w-4 h-4 mr-1 ${isRefetching ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
+        <div className="flex items-center gap-2">
+          {!hasApiKey && (
+            <div className="flex items-center text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded-md">
+              <Info className="h-3 w-3 mr-1" /> 
+              <span>Using open source API</span>
+            </div>
+          )}
+          <Button 
+            onClick={() => refetch()} 
+            variant="outline" 
+            size="sm"
+            disabled={isRefetching}
+          >
+            <RefreshCcw className={`w-4 h-4 mr-1 ${isRefetching ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+        </div>
       </div>
       
       <Tabs defaultValue="ongoing" value={activeTab} onValueChange={setActiveTab}>

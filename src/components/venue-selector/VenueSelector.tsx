@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,7 @@ interface VenueSelectorProps {
   venueList: CricketGround[];
   isLoading?: boolean;
   onRefresh?: () => void;
+  disabled?: boolean;
 }
 
 const VenueSelector: React.FC<VenueSelectorProps> = ({ 
@@ -26,7 +26,8 @@ const VenueSelector: React.FC<VenueSelectorProps> = ({
   setVenue, 
   venueList,
   isLoading = false,
-  onRefresh
+  onRefresh,
+  disabled = false
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
@@ -126,7 +127,7 @@ const VenueSelector: React.FC<VenueSelectorProps> = ({
             size="sm" 
             className="h-6 px-2 text-xs"
             onClick={handleImportVenues}
-            disabled={isImporting || isLoading}
+            disabled={isImporting || isLoading || disabled}
           >
             <Download className={`h-3 w-3 mr-1 ${isImporting ? 'animate-pulse' : ''}`} />
             Import
@@ -137,7 +138,7 @@ const VenueSelector: React.FC<VenueSelectorProps> = ({
               size="sm" 
               className="h-6 px-2 text-xs"
               onClick={onRefresh}
-              disabled={isLoading}
+              disabled={isLoading || disabled}
             >
               <RefreshCw className={`h-3 w-3 mr-1 ${isLoading ? 'animate-spin' : ''}`} />
               Refresh
@@ -158,6 +159,7 @@ const VenueSelector: React.FC<VenueSelectorProps> = ({
             }}
             onClear={handleClearSearch}
             isLoading={isLoadingVenues}
+            disabled={disabled}
           />
         )}
         
